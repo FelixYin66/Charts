@@ -155,8 +155,12 @@
     else
     {
         set1 = [[BarChartDataSet alloc] initWithEntries:yVals label:@"The year 2017"];
-        [set1 setColors:ChartColorTemplates.material];
+//        [set1 setColors:ChartColorTemplates.material];
+        set1.barGradientColors = @[@[[UIColor colorWithRed:46/255.0 green:204/255.0 blue:113/255.0 alpha:1],[UIColor colorWithRed:241/255.0 green:196/255.0 blue:15/255.0 alpha:1]]]; //默认状态渐变色
+        //        set1.highlightColor = [UIColor redColor]; //单色
+        set1.highlightGradientColors = @[@[[UIColor redColor],[UIColor blackColor]]]; //高亮渐变色
         set1.drawIconsEnabled = NO;
+        set1.barNeedRedius = YES;
         
         NSMutableArray *dataSets = [[NSMutableArray alloc] init];
         [dataSets addObject:set1];

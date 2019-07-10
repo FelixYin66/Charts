@@ -426,18 +426,27 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
             //添加渐变
             if let gradientColor = dataSet.barGradientColor(at: j)
             {
-                let path = createCornerRadicusBarPath(for: barRect, roundedCorners: UIRectCorner(rawValue: UIRectCorner.topRight.rawValue|UIRectCorner.topLeft.rawValue))
-                path.close()
-                context.addPath(path.cgPath)
-                context.clip()
-                context.fill(barRect)
-                drawGradient(context: context, barRect: barRect, gradientColors: gradientColor, orientation: dataSet.barGradientOrientation, path: path.cgPath)
+                if dataSet.barNeedRedius {
+                    let path = createCornerRadicusBarPath(for: barRect, roundedCorners: UIRectCorner(rawValue: UIRectCorner.topRight.rawValue|UIRectCorner.topLeft.rawValue))
+                    path.close()
+                    context.addPath(path.cgPath)
+                    context.clip()
+                    context.fill(barRect)
+                    drawGradient(context: context, barRect: barRect, gradientColors: gradientColor, orientation: dataSet.barGradientOrientation, path: path.cgPath)
+                }else{
+                    context.fill(barRect)
+                    drawGradient(context: context, barRect: barRect, gradientColors: gradientColor, orientation: dataSet.barGradientOrientation, path: context.path!)
+                }
             }else{
-                let path = createCornerRadicusBarPath(for: barRect, roundedCorners: UIRectCorner(rawValue: UIRectCorner.topRight.rawValue|UIRectCorner.topLeft.rawValue))
-                path.close()
-                context.addPath(path.cgPath)
-                context.clip()
-                context.fill(barRect)
+                if dataSet.barNeedRedius {
+                    let path = createCornerRadicusBarPath(for: barRect, roundedCorners: UIRectCorner(rawValue: UIRectCorner.topRight.rawValue|UIRectCorner.topLeft.rawValue))
+                    path.close()
+                    context.addPath(path.cgPath)
+                    context.clip()
+                    context.fill(barRect)
+                }else{
+                    context.fill(barRect)
+                }
             }
             
             if drawBorder
@@ -859,17 +868,26 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 
                 if set.highlightGradientColors?.count ?? 0 > 0{
                     let gradientColor = set.highlightGradientColor(at: 0)
-                    let path = createCornerRadicusBarPath(for: barRect, roundedCorners: UIRectCorner(rawValue: UIRectCorner.topRight.rawValue|UIRectCorner.topLeft.rawValue))
-                    path.close()
-                    context.addPath(path.cgPath)
-                    context.clip()
-                    context.fill(barRect)
-                    drawGradient(context: context, barRect: barRect, gradientColors: gradientColor!, orientation: set.barGradientOrientation, path: path.cgPath)
+                    if set.barNeedRedius {
+                       let path = createCornerRadicusBarPath(for: barRect, roundedCorners: UIRectCorner(rawValue: UIRectCorner.topRight.rawValue|UIRectCorner.topLeft.rawValue))
+                        path.close()
+                        context.addPath(path.cgPath)
+                        context.clip()
+                        context.fill(barRect)
+                        drawGradient(context: context, barRect: barRect, gradientColors: gradientColor!, orientation: set.barGradientOrientation, path: path.cgPath)
+                    }else{
+                        context.fill(barRect)
+                        drawGradient(context: context, barRect: barRect, gradientColors: gradientColor!, orientation: set.barGradientOrientation, path: context.path!)
+                    }
                 }else{
-                    let path = createCornerRadicusBarPath(for: barRect, roundedCorners: UIRectCorner(rawValue: UIRectCorner.topRight.rawValue|UIRectCorner.topLeft.rawValue))
-                    context.addPath(path.cgPath)
-                    context.clip()
-                    context.fill(barRect)
+                    if set.barNeedRedius {
+                        let path = createCornerRadicusBarPath(for: barRect, roundedCorners: UIRectCorner(rawValue: UIRectCorner.topRight.rawValue|UIRectCorner.topLeft.rawValue))
+                        context.addPath(path.cgPath)
+                        context.clip()
+                        context.fill(barRect)
+                    }else{
+                        context.fill(barRect)
+                    }
                 }
             }
         }
