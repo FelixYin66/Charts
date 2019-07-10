@@ -21,6 +21,8 @@
 @property (nonatomic, strong) IBOutlet UITextField *sliderTextX;
 @property (nonatomic, strong) IBOutlet UITextField *sliderTextY;
 @property(nonatomic,assign) NSInteger count;
+@property(nonatomic,assign) double barSpace;
+@property(nonatomic,assign) double barWidth;
 
 @end
 
@@ -30,6 +32,8 @@
 {
     [super viewDidLoad];
     self.count = 7;
+    self.barSpace = 5;
+    self.barWidth = 1;
     self.title = @"Bar Chart";
     
     self.options = @[
@@ -54,31 +58,39 @@
     _chartView.drawValueAboveBarEnabled = NO;
     
     _chartView.maxVisibleCount = 60;
+    _chartView.xAxisRenderer.needSpaceNotDrawLabelAndGrid = YES;
+    _chartView.xAxisRenderer.spaceNotDrawLabelAndGrid = self.barSpace;
     
     ChartXAxis *xAxis = _chartView.xAxis;
+    xAxis.drawAxisLineEnabled = NO;
+    xAxis.drawGridLinesEnabled = YES;
     xAxis.labelPosition = XAxisLabelPositionBottom;
     xAxis.labelFont = [UIFont systemFontOfSize:10.f];
-    xAxis.drawGridLinesEnabled = NO;
+    xAxis.drawGridLinesEnabled = YES;
     xAxis.granularity = 1.0; // only intervals of 1 day
     xAxis.labelCount = self.count;
-    xAxis.valueFormatter = [[DayAxisValueFormatter alloc] initForChart:_chartView];
+    DayAxisValueFormatter *formatter = [[DayAxisValueFormatter alloc] initForChart:_chartView];
+    formatter.barSpace = self.barSpace;
+    xAxis.valueFormatter = formatter;
     
-    NSNumberFormatter *leftAxisFormatter = [[NSNumberFormatter alloc] init];
-    leftAxisFormatter.minimumFractionDigits = 0;
-    leftAxisFormatter.maximumFractionDigits = 1;
-    leftAxisFormatter.negativeSuffix = @" $";
-    leftAxisFormatter.positiveSuffix = @" $";
-    
-    ChartYAxis *leftAxis = _chartView.leftAxis;
-    leftAxis.labelFont = [UIFont systemFontOfSize:10.f];
-    leftAxis.labelCount = 8;
-    leftAxis.valueFormatter = [[ChartDefaultAxisValueFormatter alloc] initWithFormatter:leftAxisFormatter];
-    leftAxis.labelPosition = YAxisLabelPositionOutsideChart;
-    leftAxis.spaceTop = 0.15;
-    leftAxis.axisMinimum = 0.0; // this replaces startAtZero = YES
+//    NSNumberFormatter *leftAxisFormatter = [[NSNumberFormatter alloc] init];
+//    leftAxisFormatter.minimumFractionDigits = 0;
+//    leftAxisFormatter.maximumFractionDigits = 1;
+//    leftAxisFormatter.negativeSuffix = @" $";
+//    leftAxisFormatter.positiveSuffix = @" $";
+//
+//    ChartYAxis *leftAxis = _chartView.leftAxis;
+//    leftAxis.labelFont = [UIFont systemFontOfSize:10.f];
+//    leftAxis.labelCount = 8;
+//    leftAxis.valueFormatter = [[ChartDefaultAxisValueFormatter alloc] initWithFormatter:leftAxisFormatter];
+//
+//    leftAxis.labelPosition = YAxisLabelPositionOutsideChart;
+//    leftAxis.spaceTop = 0.15;
+//    leftAxis.axisMinimum = 0.0; // this replaces startAtZero = YES
     
     _chartView.leftAxis.enabled = NO;
     _chartView.rightAxis.enabled = NO;
+    _chartView.leftAxis.axisMinimum = 0;
 //    ChartYAxis *rightAxis = _chartView.rightAxis;
 //    rightAxis.enabled = YES;
 //    rightAxis.drawGridLinesEnabled = NO;
@@ -137,8 +149,8 @@
     count = self.count;
     NSMutableArray *yVals = [[NSMutableArray alloc] init];
     
-    NSInteger spacePercent = 2;
-    NSInteger barWidthPercent = 1;//0.85;
+    NSInteger spacePercent = self.barSpace;
+    NSInteger barWidthPercent = self.barWidth;//0.85;
     
     CGFloat barWidth = 37;
     CGFloat space = 0;//(spacePercent - barWidthPercent)*37;
@@ -194,8 +206,11 @@
         data.barWidth = barWidthPercent;
         
         _chartView.data = data;
-        
+        _chartView.scaleXEnabled = NO;
+        _chartView.scaleYEnabled = NO;
         [_chartView setVisibleXRangeMaximum:visibleCount];
+//        [_chartView setVisibleXRangeMinimum:self.count];
+//        [_chartView setVisibleXRangeMinimum:visibleCount];
         if (scale < 1) {
             [_chartView.viewPortHandler setMaximumScaleX:scale];
         }else{

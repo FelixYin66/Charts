@@ -18,7 +18,7 @@
     if (self)
     {
         self->_chart = chart;
-        
+        self.barSpace = 1;
         months = @[
                    @"Jan", @"Feb", @"Mar",
                    @"Apr", @"May", @"Jun",
@@ -35,9 +35,20 @@
     int days = (int)value;
     int year = [self determineYearForDays:days];
     int month = [self determineMonthForDayOfYear:days];
-    
+    NSLog(@"value == %@",@(value));
     NSString *monthName = months[month % months.count];
     NSString *yearName = [@(year) stringValue];
+    if (value == 11) {
+        NSLog(@"11");
+    }
+    
+    if (fmod(value, self.barSpace) != 0) {
+        return @"";
+    }else{
+        value = floor(value/self.barSpace);
+        NSLog(@"value😄 == %@",@(value));
+        return [@"" stringByAppendingFormat:@"%@",@(value)];
+    }
     
     if (_chart.visibleXRange > 30 * 6)
     {

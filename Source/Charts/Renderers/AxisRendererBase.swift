@@ -18,6 +18,12 @@ open class AxisRendererBase: Renderer
     /// base axis this axis renderer works with
     @objc open var axis: AxisBase?
     
+    /// bar space not draw gridline and label
+    @objc open var needSpaceNotDrawLabelAndGrid: Bool = false
+    
+    /// bar space not draw gridline and label
+    @objc open var spaceNotDrawLabelAndGrid: Double = 1
+    
     /// transformer to transform values to screen pixels and return
     @objc open var transformer: Transformer?
 

@@ -9,6 +9,8 @@
 
 @interface DayAxisValueFormatter : NSObject <IChartAxisValueFormatter>
 
+@property(nonatomic,assign) double barSpace; //bar与bar中轴线space
+
 - (id)initForChart:(BarLineChartViewBase *)chart;
 
 @end
