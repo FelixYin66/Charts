@@ -57,10 +57,6 @@
     _chartView.drawBarShadowEnabled = NO;
     _chartView.drawValueAboveBarEnabled = NO;
     
-    _chartView.maxVisibleCount = 60;
-    _chartView.xAxisRenderer.needSpaceNotDrawLabelAndGrid = YES;
-    _chartView.xAxisRenderer.spaceNotDrawLabelAndGrid = self.barSpace;
-    
     ChartXAxis *xAxis = _chartView.xAxis;
     xAxis.drawAxisLineEnabled = NO;
     xAxis.drawGridLinesEnabled = YES;
@@ -208,13 +204,13 @@
         _chartView.data = data;
         _chartView.scaleXEnabled = NO;
         _chartView.scaleYEnabled = NO;
+        _chartView.xAxis.gridAntialiasEnabled = YES;
+        _chartView.xAxis.granularity = self.barSpace;
         [_chartView setVisibleXRangeMaximum:visibleCount];
-//        [_chartView setVisibleXRangeMinimum:self.count];
-//        [_chartView setVisibleXRangeMinimum:visibleCount];
         if (scale < 1) {
             [_chartView.viewPortHandler setMaximumScaleX:scale];
         }else{
-            //            [_chartView.viewPortHandler setMinimumScaleX:scale];
+//            [_chartView.viewPortHandler setMinimumScaleX:scale];
         }
     }
 }

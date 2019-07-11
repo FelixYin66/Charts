@@ -301,26 +301,8 @@ open class XAxisRenderer: AxisRendererBase
         
         let entries = xAxis.entries
         
-//        for i in stride(from: 0, to: entries.count, by: 1)
-//        {
-//            let num = entries[i];
-//            if self.needSpaceNotDrawLabelAndGrid && (fmod(num, self.spaceNotDrawLabelAndGrid) != 0) {
-//                continue;
-//            }
-//            position.x = CGFloat(entries[i])
-//            position.y = position.x
-//            position = position.applying(valueToPixelMatrix)
-//
-//            drawGridLine(context: context, x: position.x, y: position.y)
-//        }
-        
         for i in stride(from: 0, to: entries.count, by: 1)
         {
-            let kk = entries[i];
-            if self.needSpaceNotDrawLabelAndGrid && (fmod(kk, self.spaceNotDrawLabelAndGrid) != 0) {
-                print("😁😁😁😁")
-                continue;
-            }
             position.x = CGFloat(entries[i])
             position.y = position.x
             position = position.applying(valueToPixelMatrix)

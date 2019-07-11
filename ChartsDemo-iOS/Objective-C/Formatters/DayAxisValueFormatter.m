@@ -42,13 +42,13 @@
         NSLog(@"11");
     }
     
-    if (fmod(value, self.barSpace) != 0) {
-        return @"";
-    }else{
-        value = floor(value/self.barSpace);
-        NSLog(@"value😄 == %@",@(value));
-        return [@"" stringByAppendingFormat:@"%@",@(value)];
-    }
+//    if (fmod(value, self.barSpace) != 0) {
+//        return @"";
+//    }else{
+//        value = floor(value/self.barSpace);
+//        NSLog(@"value😄 == %@",@(value));
+//        return [@"" stringByAppendingFormat:@"%@",@(value)];
+//    }
     
     if (_chart.visibleXRange > 30 * 6)
     {
