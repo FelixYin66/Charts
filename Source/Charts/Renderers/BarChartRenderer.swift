@@ -114,7 +114,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
 
             x = e.x
             y = e.y
-
+            print("😁😁😁😁",e)
             if !containsStacks || vals == nil
             {
                 let left = CGFloat(x - barWidthHalf)
@@ -426,6 +426,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
             //添加渐变
             if let gradientColor = dataSet.barGradientColor(at: j)
             {
+                print(barRect)
                 if dataSet.barNeedRedius {
                     let path = createCornerRadicusBarPath(for: barRect, roundedCorners: UIRectCorner(rawValue: UIRectCorner.topRight.rawValue|UIRectCorner.topLeft.rawValue))
                     path.close()

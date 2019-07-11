@@ -21,8 +21,8 @@
 @property (nonatomic, strong) IBOutlet UITextField *sliderTextX;
 @property (nonatomic, strong) IBOutlet UITextField *sliderTextY;
 @property(nonatomic,assign) NSInteger count;
-@property(nonatomic,assign) double barSpace;
-@property(nonatomic,assign) double barWidth;
+@property(nonatomic,assign) double barSpaceScale;
+@property(nonatomic,assign) double barWidthScale;
 
 @end
 
@@ -31,9 +31,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.count = 7;
-    self.barSpace = 5;
-    self.barWidth = 1;
+    self.count = 5;
+    self.barSpaceScale = 5;
+    self.barWidthScale = 1;
     self.title = @"Bar Chart";
     
     self.options = @[
@@ -63,10 +63,9 @@
     xAxis.labelPosition = XAxisLabelPositionBottom;
     xAxis.labelFont = [UIFont systemFontOfSize:10.f];
     xAxis.drawGridLinesEnabled = YES;
-    xAxis.granularity = 1.0; // only intervals of 1 day
-    xAxis.labelCount = self.count;
+//    xAxis.labelCount = self.count;
     DayAxisValueFormatter *formatter = [[DayAxisValueFormatter alloc] initForChart:_chartView];
-    formatter.barSpace = self.barSpace;
+//    formatter.barSpace = self.barSpace;
     xAxis.valueFormatter = formatter;
     
 //    NSNumberFormatter *leftAxisFormatter = [[NSNumberFormatter alloc] init];
@@ -143,23 +142,27 @@
 {
     double start = 1.0;
     count = self.count;
+    //指定bar的实际宽度，是以点来计算
+    CGFloat barWidth = 100.0;
     NSMutableArray *yVals = [[NSMutableArray alloc] init];
-    
-    NSInteger spacePercent = self.barSpace;
-    NSInteger barWidthPercent = self.barWidth;//0.85;
-    
-    CGFloat barWidth = 37;
-    CGFloat space = 0;//(spacePercent - barWidthPercent)*37;
-    CGFloat totalWidth = CGRectGetWidth(self.chartView.frame);
-    NSInteger visibleCount = (totalWidth - space)/(barWidth+space);
-    NSLog(@"%@",@((totalWidth - space)/(barWidth+space)));
-    CGFloat averageWidth = (totalWidth/(visibleCount*2-1));
-    CGFloat scale = barWidth/averageWidth;
-    if (visibleCount > count) {
-        scale = barWidth/((totalWidth - 20)/(count*2-1));
+    NSInteger spacePercent = self.barSpaceScale;
+    NSInteger barWidthPercent = self.barWidthScale;
+    double leftSpace = 5; //左边边距
+    double rightSpace = 10; //右边边距
+    double xAxisLeftSpaceScale = (barWidth*0.5+leftSpace - 10)/barWidth;
+    double xAxisRightSpaceScale = (barWidth*0.5+rightSpace - 10)/barWidth;
+    _chartView.xAxis.spaceMin = xAxisLeftSpaceScale; //xAxis左边间隙比例
+    _chartView.xAxis.spaceMax = xAxisRightSpaceScale; //xAxis右边间隙比例
+    double xAxisLeftAndRightSpace = 20; //框架固定space 20
+    CGFloat totalWidth = CGRectGetWidth(self.chartView.frame) - xAxisLeftAndRightSpace;
+    double visibleCount = totalWidth/barWidth;
+    double averageWidth = 0;
+    if (self.count > 0 && self.count < visibleCount) {
+        double spaceCount = self.barSpaceScale*(self.count-1)+1;
+        averageWidth = (spaceCount > visibleCount) ? 0 : (totalWidth/spaceCount);
     }
-    NSLog(@"averageWidth == %@  totalWidth == %@ scale == %@",@(averageWidth),@(totalWidth),@(scale));
-    
+    //当charts中bar的宽度大于指定的bar的宽度是需要缩放scale比例，从而达到指定bar宽度
+    CGFloat scale = barWidth/averageWidth;
     for (int i = start; i < start + count; i++)
     {
         double mult = (range + 1);
@@ -204,13 +207,12 @@
         _chartView.data = data;
         _chartView.scaleXEnabled = NO;
         _chartView.scaleYEnabled = NO;
-        _chartView.xAxis.gridAntialiasEnabled = YES;
-        _chartView.xAxis.granularity = self.barSpace;
+        _chartView.xAxis.granularityEnabled = YES;
+        _chartView.xAxis.granularity = self.barSpaceScale;
         [_chartView setVisibleXRangeMaximum:visibleCount];
-        if (scale < 1) {
-            [_chartView.viewPortHandler setMaximumScaleX:scale];
-        }else{
-//            [_chartView.viewPortHandler setMinimumScaleX:scale];
+        if (scale != 0) {
+            //防止在visiblecount 大于实际count
+           [_chartView.viewPortHandler setMaximumScaleX:scale];
         }
     }
 }
