@@ -35,12 +35,12 @@
     int days = (int)value;
     int year = [self determineYearForDays:days];
     int month = [self determineMonthForDayOfYear:days];
-    NSLog(@"value == %@",@(value));
+//    NSLog(@"value == %@",@(value));
     NSString *monthName = months[month % months.count];
     NSString *yearName = [@(year) stringValue];
-    if (value == 11) {
-        NSLog(@"11");
-    }
+//    if (value == 11) {
+//        NSLog(@"11");
+//    }
     
 //    if (fmod(value, self.barSpace) != 0) {
 //        return @"";
