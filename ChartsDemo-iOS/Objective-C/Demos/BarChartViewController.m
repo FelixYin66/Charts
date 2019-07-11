@@ -23,6 +23,9 @@
 @property(nonatomic,assign) NSInteger count;
 @property(nonatomic,assign) double barSpaceScale;
 @property(nonatomic,assign) double barWidthScale;
+@property(nonatomic,assign) double barWidth;
+@property(nonatomic,assign) double chartsViewLeftSpace;
+@property(nonatomic,assign) double chartsViewRightSpace;
 
 @end
 
@@ -34,6 +37,9 @@
     self.count = 5;
     self.barSpaceScale = 5;
     self.barWidthScale = 1;
+    self.barWidth = 50;
+    self.chartsViewLeftSpace = 20;
+    self.chartsViewRightSpace = 5;
     self.title = @"Bar Chart";
     
     self.options = @[
@@ -143,12 +149,12 @@
     double start = 1.0;
     count = self.count;
     //指定bar的实际宽度，是以点来计算
-    CGFloat barWidth = 100.0;
+    CGFloat barWidth = self.barWidth;
     NSMutableArray *yVals = [[NSMutableArray alloc] init];
     NSInteger spacePercent = self.barSpaceScale;
     NSInteger barWidthPercent = self.barWidthScale;
-    double leftSpace = 5; //左边边距
-    double rightSpace = 10; //右边边距
+    double leftSpace = self.chartsViewLeftSpace; //左边边距
+    double rightSpace = self.chartsViewRightSpace; //右边边距
     double xAxisLeftSpaceScale = (barWidth*0.5+leftSpace - 10)/barWidth;
     double xAxisRightSpaceScale = (barWidth*0.5+rightSpace - 10)/barWidth;
     _chartView.xAxis.spaceMin = xAxisLeftSpaceScale; //xAxis左边间隙比例
