@@ -45,10 +45,10 @@ open class XAxisRenderer: AxisRendererBase
                 }
             }
         }
-        if !min.isNaN {
+        if min.isNaN {
             min = 0;
         }
-        if !max.isNaN {
+        if max.isNaN {
             max = 0;
         }
         computeAxisValues(min: min, max: max)
