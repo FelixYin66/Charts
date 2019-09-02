@@ -34,14 +34,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.count = 5;
+    self.count = 10;
     self.barSpaceScale = 5;
     self.barWidthScale = 1;
-    self.barWidth = 50;
-    self.chartsViewLeftSpace = 20;
-    self.chartsViewRightSpace = 5;
+    self.barWidth = 15;
+    self.chartsViewLeftSpace = 40;
+    self.chartsViewRightSpace = 40;
     self.title = @"Bar Chart";
-    
+    //213
     self.options = @[
                      @{@"key": @"toggleValues", @"label": @"Toggle Values"},
                      @{@"key": @"toggleIcons", @"label": @"Toggle Icons"},
@@ -159,12 +159,14 @@
     double xAxisRightSpaceScale = (barWidth*0.5+rightSpace - 10)/barWidth;
     _chartView.xAxis.spaceMin = xAxisLeftSpaceScale; //xAxis左边间隙比例
     _chartView.xAxis.spaceMax = xAxisRightSpaceScale; //xAxis右边间隙比例
+    NSLog(@" === %@",@(xAxisLeftSpaceScale));
     double xAxisLeftAndRightSpace = 20; //框架固定space 20
     CGFloat totalWidth = CGRectGetWidth(self.chartView.frame) - xAxisLeftAndRightSpace;
     double visibleCount = totalWidth/barWidth;
     double averageWidth = 0;
+    //35.5  23.6 23.6
     if (self.count > 0 && self.count < visibleCount) {
-        double spaceCount = self.barSpaceScale*(self.count-1)+1;
+        double spaceCount = self.barSpaceScale*(self.count-1)+xAxisLeftSpaceScale+xAxisRightSpaceScale;
         averageWidth = (spaceCount > visibleCount) ? 0 : (totalWidth/spaceCount);
     }
     //当charts中bar的宽度大于指定的bar的宽度是需要缩放scale比例，从而达到指定bar宽度
@@ -193,11 +195,14 @@
     }
     else
     {
+        
+//        @[@[[UIColor colorWithRed:0/255.0 green:36/255.0 blue:83/255.0 alpha:1],[UIColor colorWithRed:0/255.0 green:45/255.0 blue:114/255.0 alpha:1]]];
+//        _chartView.highlightGradientColors = @[@[[UIColor colorWithRed:30/255.0 green:129/255.0 blue:253/255.0 alpha:1],[UIColor colorWithRed:109/255.0 green:221/255.0 blue:255/255.0 alpha:1]]];
         set1 = [[BarChartDataSet alloc] initWithEntries:yVals label:@"The year 2017"];
 //        [set1 setColors:ChartColorTemplates.material];
-        set1.barGradientColors = @[@[[UIColor colorWithRed:46/255.0 green:204/255.0 blue:113/255.0 alpha:1],[UIColor colorWithRed:241/255.0 green:196/255.0 blue:15/255.0 alpha:1]]]; //默认状态渐变色
+        set1.barGradientColors = @[@[[UIColor colorWithRed:0/255.0 green:36/255.0 blue:83/255.0 alpha:1],[UIColor colorWithRed:0/255.0 green:45/255.0 blue:114/255.0 alpha:1]]]; //默认状态渐变色
         //        set1.highlightColor = [UIColor redColor]; //单色
-        set1.highlightGradientColors = @[@[[UIColor redColor],[UIColor blackColor]]]; //高亮渐变色
+        set1.highlightGradientColors = @[@[[UIColor colorWithRed:30/255.0 green:129/255.0 blue:253/255.0 alpha:1],[UIColor colorWithRed:109/255.0 green:221/255.0 blue:255/255.0 alpha:1]]]; //高亮渐变色
         set1.drawIconsEnabled = NO;
         set1.drawValuesEnabled = NO;
         set1.barNeedRedius = YES;
@@ -220,6 +225,10 @@
             //防止在visiblecount 大于实际count
            [_chartView.viewPortHandler setMaximumScaleX:scale];
         }
+        
+        //设置默认选中
+        id hh = [_chartView.highlighter getHighlightWithX:39.9999 y:1];
+        [_chartView highlightValue:hh];
     }
 }
 

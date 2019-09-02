@@ -43,6 +43,12 @@ open class XAxisRenderer: AxisRendererBase
                     min = Double(p1.x)
                     max = Double(p2.x)
                 }
+                if !min.isNaN {
+                    min = 0;
+                }
+                if !max.isNaN {
+                    max = 0;
+                }
             }
         }
         

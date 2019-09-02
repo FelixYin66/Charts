@@ -405,6 +405,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
         for j in stride(from: 0, to: buffer.rects.count, by: 1)
         {
             let barRect = buffer.rects[j]
+            print(barRect)
             context.resetClip()
             if (!viewPortHandler.isInBoundsLeft(barRect.origin.x + barRect.size.width))
             {
@@ -798,7 +799,6 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
         let path = UIBezierPath(roundedRect: rect,
                                 byRoundingCorners: roundedCorners,
                                 cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
-        
         return path
     }
     
