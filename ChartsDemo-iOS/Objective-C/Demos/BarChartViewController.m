@@ -198,24 +198,29 @@
         
 //        @[@[[UIColor colorWithRed:0/255.0 green:36/255.0 blue:83/255.0 alpha:1],[UIColor colorWithRed:0/255.0 green:45/255.0 blue:114/255.0 alpha:1]]];
 //        _chartView.highlightGradientColors = @[@[[UIColor colorWithRed:30/255.0 green:129/255.0 blue:253/255.0 alpha:1],[UIColor colorWithRed:109/255.0 green:221/255.0 blue:255/255.0 alpha:1]]];
-        set1 = [[BarChartDataSet alloc] initWithEntries:yVals label:@"The year 2017"];
-//        [set1 setColors:ChartColorTemplates.material];
-        set1.barGradientColors = @[@[[UIColor colorWithRed:0/255.0 green:36/255.0 blue:83/255.0 alpha:1],[UIColor colorWithRed:0/255.0 green:45/255.0 blue:114/255.0 alpha:1]]]; //默认状态渐变色
-        //        set1.highlightColor = [UIColor redColor]; //单色
-        set1.highlightGradientColors = @[@[[UIColor colorWithRed:30/255.0 green:129/255.0 blue:253/255.0 alpha:1],[UIColor colorWithRed:109/255.0 green:221/255.0 blue:255/255.0 alpha:1]]]; //高亮渐变色
-        set1.drawIconsEnabled = NO;
-        set1.drawValuesEnabled = NO;
-        set1.barNeedRedius = YES;
-        
-        NSMutableArray *dataSets = [[NSMutableArray alloc] init];
-        [dataSets addObject:set1];
-        
-        BarChartData *data = [[BarChartData alloc] initWithDataSets:dataSets];
-        [data setValueFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:10.f]];
-        _chartView.fitBars = NO;
-        data.barWidth = barWidthPercent;
-        
-        _chartView.data = data;
+        yVals = [[NSMutableArray alloc] init];
+        if(yVals.count > 0){
+            set1 = [[BarChartDataSet alloc] initWithEntries:yVals label:@"The year 2017"];
+            //        [set1 setColors:ChartColorTemplates.material];
+            set1.barGradientColors = @[@[[UIColor colorWithRed:0/255.0 green:36/255.0 blue:83/255.0 alpha:1],[UIColor colorWithRed:0/255.0 green:45/255.0 blue:114/255.0 alpha:1]]]; //默认状态渐变色
+            //        set1.highlightColor = [UIColor redColor]; //单色
+            set1.highlightGradientColors = @[@[[UIColor colorWithRed:30/255.0 green:129/255.0 blue:253/255.0 alpha:1],[UIColor colorWithRed:109/255.0 green:221/255.0 blue:255/255.0 alpha:1]]]; //高亮渐变色
+            set1.drawIconsEnabled = NO;
+            set1.drawValuesEnabled = NO;
+            set1.barNeedRedius = YES;
+            
+            NSMutableArray *dataSets = [[NSMutableArray alloc] init];
+            [dataSets addObject:set1];
+            
+            BarChartData *data = [[BarChartData alloc] initWithDataSets:dataSets];
+            [data setValueFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:10.f]];
+            _chartView.fitBars = NO;
+            data.barWidth = barWidthPercent;
+            
+            _chartView.data = data;
+        }else{
+            _chartView.data = nil;
+        }
         _chartView.scaleXEnabled = NO;
         _chartView.scaleYEnabled = NO;
         _chartView.xAxis.granularityEnabled = YES;
