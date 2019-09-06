@@ -434,8 +434,12 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                     context.fill(barRect)
                     drawGradient(context: context, barRect: barRect, gradientColors: gradientColor, orientation: dataSet.barGradientOrientation, path: path.cgPath)
                 }else{
+                    let path = UIBezierPath(rect: barRect)
+                    path.close()
+                    context.addPath(path.cgPath)
+                    context.clip()
                     context.fill(barRect)
-                    drawGradient(context: context, barRect: barRect, gradientColors: gradientColor, orientation: dataSet.barGradientOrientation, path: context.path!)
+                    drawGradient(context: context, barRect: barRect, gradientColors: gradientColor, orientation: dataSet.barGradientOrientation, path: path.cgPath)
                 }
             }else{
                 if dataSet.barNeedRedius {
