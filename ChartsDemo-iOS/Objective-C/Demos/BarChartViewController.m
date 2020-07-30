@@ -34,7 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.count = 3;
+    self.count = 5;
     self.barSpaceScale = 5;
     self.barWidthScale = 1;
     self.barWidth = 15;
@@ -203,9 +203,7 @@
         if(yVals.count > 0){
 //            [UIColor colorWithRed:0/255.0 green:45/255.0 blue:114/255.0 alpha:1]
             set1 = [[BarChartDataSet alloc] initWithEntries:yVals label:@"The year 2017"];
-//            [set1 setColor:[UIColor colorWithRed:0/255.0 green:45/255.0 blue:114/255.0 alpha:1]];
-//                    [set1 setColors:ChartColorTemplates.material];
-            [set1 setColor:nil];
+            [set1 setColor:nil];//解决默认状态下毛边问题
             set1.barGradientColors = @[@[[UIColor colorWithRed:0/255.0 green:36/255.0 blue:83/255.0 alpha:1],[UIColor colorWithRed:0/255.0 green:45/255.0 blue:114/255.0 alpha:1]]]; //默认状态渐变色
 //            set1.highlightColor = nil;//[UIColor redColor]; //单色
             set1.highlightGradientColors = @[@[[UIColor colorWithRed:30/255.0 green:129/255.0 blue:253/255.0 alpha:1],[UIColor colorWithRed:109/255.0 green:221/255.0 blue:255/255.0 alpha:1]]]; //高亮渐变色
